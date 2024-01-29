@@ -114,6 +114,11 @@ func (x *CreateUserRequest) FastRead(buf []byte, _type int8, number int32) (offs
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -134,6 +139,11 @@ func (x *CreateUserRequest) fastReadField1(buf []byte, _type int8) (offset int, 
 
 func (x *CreateUserRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
 	x.Password, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *CreateUserRequest) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.Email, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
@@ -395,6 +405,7 @@ func (x *CreateUserRequest) FastWrite(buf []byte) (offset int) {
 	}
 	offset += x.fastWriteField1(buf[offset:])
 	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
 	return offset
 }
 
@@ -411,6 +422,14 @@ func (x *CreateUserRequest) fastWriteField2(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 2, x.GetPassword())
+	return offset
+}
+
+func (x *CreateUserRequest) fastWriteField3(buf []byte) (offset int) {
+	if x.Email == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 3, x.GetEmail())
 	return offset
 }
 
@@ -602,6 +621,7 @@ func (x *CreateUserRequest) Size() (n int) {
 	}
 	n += x.sizeField1()
 	n += x.sizeField2()
+	n += x.sizeField3()
 	return n
 }
 
@@ -618,6 +638,14 @@ func (x *CreateUserRequest) sizeField2() (n int) {
 		return n
 	}
 	n += fastpb.SizeString(2, x.GetPassword())
+	return n
+}
+
+func (x *CreateUserRequest) sizeField3() (n int) {
+	if x.Email == "" {
+		return n
+	}
+	n += fastpb.SizeString(3, x.GetEmail())
 	return n
 }
 
@@ -750,6 +778,7 @@ var fieldIDToName_User = map[int32]string{
 var fieldIDToName_CreateUserRequest = map[int32]string{
 	1: "UserName",
 	2: "Password",
+	3: "Email",
 }
 
 var fieldIDToName_CreateUserResponse = map[int32]string{

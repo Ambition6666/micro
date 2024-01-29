@@ -1,47 +1,37 @@
 package main
 
 import (
+	"time"
+
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
-	"github.com/kitex-contrib/registry-nacos/v2/registry"
-	"github.com/nacos-group/nacos-sdk-go/v2/clients"
-	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
-	"github.com/nacos-group/nacos-sdk-go/v2/vo"
+	etcd "github.com/kitex-contrib/registry-etcd"
+	"github.com/kitex-contrib/registry-etcd/retry"
+
 	"log"
+	"micro/cmd/user/dal/db"
 	userdemo "micro/kitex_gen/userdemo/userservice"
 )
 
+func init() {
+	db.InitDB()
+}
+
 func main() {
-
-	sc := []constant.ServerConfig{
-		*constant.NewServerConfig("127.0.0.1", 8848),
-	}
-
-	cc := constant.ClientConfig{
-		NamespaceId:         "public",
-		TimeoutMs:           5000,
-		NotLoadCacheAtStart: true,
-		LogLevel:            "info",
-	}
-
-	cli, err := clients.NewNamingClient(
-		vo.NacosClientParam{
-			ClientConfig:  &cc,
-			ServerConfigs: sc,
-		},
+	retryConfig := retry.NewRetryConfig(
+		retry.WithMaxAttemptTimes(10),
+		retry.WithObserveDelay(20*time.Second),
+		retry.WithRetryDelay(5*time.Second),
 	)
+	r, err := etcd.NewEtcdRegistryWithRetry([]string{"116.196.66.40:2379"}, retryConfig) // r should not be reused.
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	svr := userdemo.NewServer(new(UserServiceImpl),
-		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "user"}),
-		server.WithRegistry(registry.NewNacosRegistry(cli)),
-	)
-	if err := svr.Run(); err != nil {
-		log.Println("server stopped with error:", err)
-	} else {
-		log.Println("server stopped")
+	svr := userdemo.NewServer(new(UserServiceImpl), server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "user"}), server.WithRegistry(r))
+	err = svr.Run()
+	if err != nil {
+		log.Fatal(err)
 	}
 
 }
