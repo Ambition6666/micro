@@ -15,6 +15,9 @@ type UserServiceImpl struct{}
 // CreateUser implements the UserServiceImpl interface.
 func (s *UserServiceImpl) CreateUser(ctx context.Context, req *userdemo.CreateUserRequest) (resp *userdemo.CreateUserResponse, err error) {
 	// TODO: Your code here...
+
+	resp = new(userdemo.CreateUserResponse)
+
 	u := model.NewUser(req.UserName, utils.Encrypt(req.Password, ""), req.Email)
 
 	err = db.CreateUser(ctx, u)

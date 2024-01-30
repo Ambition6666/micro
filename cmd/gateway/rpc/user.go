@@ -10,7 +10,7 @@ import (
 var ucli userservice.Client
 
 func initUser() {
-	r, err := etcd.NewEtcdResolver([]string{"116.196.66.40:2379"})
+	r, err := etcd.NewEtcdResolver([]string{"192.168.40.134:2379"})
 	if err != nil {
 		panic(err)
 	}

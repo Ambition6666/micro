@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"context"
-	"fmt"
+
 	"micro/cmd/gateway/rpc"
 	"micro/cmd/gateway/vo"
 	"micro/kitex_gen/userdemo"
@@ -12,24 +12,19 @@ import (
 
 func CreateUser(c context.Context, ctx *app.RequestContext) {
 
-	info := new(vo.CreateUserRequest)
+	req := new(vo.CreateUserRequest)
 
-	ctx.BindJSON(info)
+	ctx.BindJSON(req)
 
 	ucli := *rpc.GetUserService()
 
-	resp, err := ucli.CreateUser(c, &userdemo.CreateUserRequest{
-		UserName: info.UserName,
-		Password: info.Password,
-		Email:    info.Email,
+	_, err := ucli.CreateUser(c, &userdemo.CreateUserRequest{
+		UserName: req.UserName,
+		Password: req.Password,
+		Email:    req.Email,
 	})
 
-	if err != nil {
-		fmt.Println(err)
-		fmt.Println(resp)
-	}
 
-	fmt.Println(resp)
-
-	ctx.JSON(200, "")
+	vo.SendResponse(ctx, err, nil)
+	
 }
