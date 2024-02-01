@@ -35,11 +35,44 @@ func (s *UserServiceImpl) CreateUser(ctx context.Context, req *userdemo.CreateUs
 // MGetUser implements the UserServiceImpl interface.
 func (s *UserServiceImpl) MGetUser(ctx context.Context, req *userdemo.MGetUserRequest) (resp *userdemo.MGetUserResponse, err error) {
 	// TODO: Your code here...
+
+	resp = new(userdemo.MGetUserResponse)	
+
+	u, err := db.MGetUsers(ctx,req.UserIds)
+
+	if err != nil {
+		resp.BaseResp = pack.ReturnFail("获取失败")
+		return  
+	}
+
+	resp.BaseResp = pack.ReturnSuccess("获取成功")
+	resp.Users = pack.PackUsers(u)
 	return
+
 }
 
 // CheckUser implements the UserServiceImpl interface.
 func (s *UserServiceImpl) CheckUser(ctx context.Context, req *userdemo.CheckUserRequest) (resp *userdemo.CheckUserResponse, err error) {
 	// TODO: Your code here...
+
+	resp = new(userdemo.CheckUserResponse)
+
+	u, err := db.QueryUser(ctx, req.Email)
+
+	if err != nil {
+		resp.BaseResp = pack.ReturnFail("查询失败")
+
+		return
+	}
+
+	if u.Password != utils.Encrypt(req.Password, "") {
+		resp.BaseResp = pack.ReturnFail("密码错误")
+
+		return 
+	}
+
+	resp.BaseResp = pack.ReturnSuccess("校验成功")
+	resp.UserId = int64(u.ID)
+
 	return
 }

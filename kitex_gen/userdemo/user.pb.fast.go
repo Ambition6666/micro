@@ -74,6 +74,11 @@ func (x *User) FastRead(buf []byte, _type int8, number int32) (offset int, err e
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 4:
+		offset, err = x.fastReadField4(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -99,6 +104,11 @@ func (x *User) fastReadField2(buf []byte, _type int8) (offset int, err error) {
 
 func (x *User) fastReadField3(buf []byte, _type int8) (offset int, err error) {
 	x.Avatar, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *User) fastReadField4(buf []byte, _type int8) (offset int, err error) {
+	x.Email, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
@@ -268,6 +278,11 @@ func (x *CheckUserRequest) FastRead(buf []byte, _type int8, number int32) (offse
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 3:
+		offset, err = x.fastReadField3(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -288,6 +303,11 @@ func (x *CheckUserRequest) fastReadField1(buf []byte, _type int8) (offset int, e
 
 func (x *CheckUserRequest) fastReadField2(buf []byte, _type int8) (offset int, err error) {
 	x.Password, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *CheckUserRequest) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+	x.Email, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
@@ -372,6 +392,7 @@ func (x *User) FastWrite(buf []byte) (offset int) {
 	offset += x.fastWriteField1(buf[offset:])
 	offset += x.fastWriteField2(buf[offset:])
 	offset += x.fastWriteField3(buf[offset:])
+	offset += x.fastWriteField4(buf[offset:])
 	return offset
 }
 
@@ -396,6 +417,14 @@ func (x *User) fastWriteField3(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 3, x.GetAvatar())
+	return offset
+}
+
+func (x *User) fastWriteField4(buf []byte) (offset int) {
+	if x.Email == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 4, x.GetEmail())
 	return offset
 }
 
@@ -503,6 +532,7 @@ func (x *CheckUserRequest) FastWrite(buf []byte) (offset int) {
 	}
 	offset += x.fastWriteField1(buf[offset:])
 	offset += x.fastWriteField2(buf[offset:])
+	offset += x.fastWriteField3(buf[offset:])
 	return offset
 }
 
@@ -519,6 +549,14 @@ func (x *CheckUserRequest) fastWriteField2(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 2, x.GetPassword())
+	return offset
+}
+
+func (x *CheckUserRequest) fastWriteField3(buf []byte) (offset int) {
+	if x.Email == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 3, x.GetEmail())
 	return offset
 }
 
@@ -588,6 +626,7 @@ func (x *User) Size() (n int) {
 	n += x.sizeField1()
 	n += x.sizeField2()
 	n += x.sizeField3()
+	n += x.sizeField4()
 	return n
 }
 
@@ -612,6 +651,14 @@ func (x *User) sizeField3() (n int) {
 		return n
 	}
 	n += fastpb.SizeString(3, x.GetAvatar())
+	return n
+}
+
+func (x *User) sizeField4() (n int) {
+	if x.Email == "" {
+		return n
+	}
+	n += fastpb.SizeString(4, x.GetEmail())
 	return n
 }
 
@@ -719,6 +766,7 @@ func (x *CheckUserRequest) Size() (n int) {
 	}
 	n += x.sizeField1()
 	n += x.sizeField2()
+	n += x.sizeField3()
 	return n
 }
 
@@ -735,6 +783,14 @@ func (x *CheckUserRequest) sizeField2() (n int) {
 		return n
 	}
 	n += fastpb.SizeString(2, x.GetPassword())
+	return n
+}
+
+func (x *CheckUserRequest) sizeField3() (n int) {
+	if x.Email == "" {
+		return n
+	}
+	n += fastpb.SizeString(3, x.GetEmail())
 	return n
 }
 
@@ -773,6 +829,7 @@ var fieldIDToName_User = map[int32]string{
 	1: "UserId",
 	2: "UserName",
 	3: "Avatar",
+	4: "Email",
 }
 
 var fieldIDToName_CreateUserRequest = map[int32]string{
@@ -797,6 +854,7 @@ var fieldIDToName_MGetUserResponse = map[int32]string{
 var fieldIDToName_CheckUserRequest = map[int32]string{
 	1: "UserName",
 	2: "Password",
+	3: "Email",
 }
 
 var fieldIDToName_CheckUserResponse = map[int32]string{

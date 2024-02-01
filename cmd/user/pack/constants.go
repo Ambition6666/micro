@@ -14,7 +14,7 @@ func ReturnSuccess(msg string) *userdemo.BaseResp {
 	}
 }
 
-func ReturnFail(msg string) *userdemo.BaseResp {
+func ReturnFail(msg string) *userdemo.BaseResp { 
 	return &userdemo.BaseResp{
 		StatusCode:    consts.FailCode,
 		StatusMessage: msg,

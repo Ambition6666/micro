@@ -25,9 +25,9 @@ func CreateUser(ctx context.Context, user *model.User) error {
 }
 
 // QueryUser query list of user info
-func QueryUser(ctx context.Context, userName string) ([]*model.User, error) {
-	res := make([]*model.User, 0)
-	if err := DB.WithContext(ctx).Where("user_name = ?", userName).Find(&res).Error; err != nil {
+func QueryUser(ctx context.Context, email string) (*model.User, error) {
+	res := new(model.User)
+	if err := DB.WithContext(ctx).Where("email = ?", email).Find(&res).Error; err != nil {
 		return nil, err
 	}
 	return res, nil
