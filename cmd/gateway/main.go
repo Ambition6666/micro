@@ -16,6 +16,8 @@ func init() {
 }
 
 func main() {
+
+
 	h := server.Default(server.WithHostPorts(":9090"))
 
 	h.GET("/ping", func(c context.Context, ctx *app.RequestContext) {
@@ -24,5 +26,9 @@ func main() {
 
 	h.POST("/user", handlers.CreateUser)
 
+	h.GET("/chat", handlers.Chat)
+
 	h.Spin()
+
+	rpc.CloseConn()
 }
