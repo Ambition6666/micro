@@ -2,7 +2,7 @@ syntax = "proto3";
 package chat;
 
 // 指定golang包名
-option go_package = "./chatwithbotdemo";
+option go_package = "chatwithbotdemo";
 
 // 基本定义消息, 类似结构体
 message BaseResp {

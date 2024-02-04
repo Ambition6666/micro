@@ -14,7 +14,7 @@ func Chat(c context.Context, ctx *app.RequestContext) {
 
 	msg := ctx.Query("msg")
 
-	ccli := rpc.GetChatWithBotService()
+	ccli := *rpc.GetChatWithBotService()
 
 	res, err := ccli.Chat(c, &chatwithbotdemo.ChatRequest{
 		Msg:    msg,

@@ -30,5 +30,4 @@ func main() {
 
 	h.Spin()
 
-	rpc.CloseConn()
 }
