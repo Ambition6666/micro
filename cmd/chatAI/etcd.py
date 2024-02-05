@@ -1,8 +1,9 @@
 import etcd3
 import json
 import socket
+from manager import manager
 
-lease_timeout = 500
+lease_timeout = 60
 is_lease = False
 
 def get_outside_ip():
@@ -36,7 +37,8 @@ class EtcdClient(etcd3.Etcd3Client):
     def put_values_by_key(self, key, values, lease):
         if not isinstance(values, dict):
             raise Exception()
-        self.put(key, json.dumps(values),lease)
+        self.put(key, json.dumps(values), lease)
+        manager.setLease(lease)
 
 
 class EtcdHandleServ():

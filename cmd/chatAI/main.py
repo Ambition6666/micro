@@ -5,12 +5,34 @@ import aiservice_pb2, aiservice_pb2_grpc
 from etcd import EtcdHandleServ
 import threading
 import signal
-
 import chain
+import sched
+from manager import manager
+
+# 定时任务对象
+schedule = sched.scheduler(time.time, time.sleep)
+
+# 给etcd键值对续约
+def refresh(inc, schedule):
+    manager.refreshLease()
+    time.sleep(inc)
+    schedule.enter(0, 0, refresh, (inc, schedule))
+
+def schedul_job():
+    inc = 10  # 定时任务,循环时间
+    time.sleep(inc)
+    schedule.enter(0, 0, refresh, (inc, schedule))  # 加入定时任务
+    schedule.run()  # 执行
+
+def something_schedule():
+    t = threading.Thread(target=schedul_job)
+    t.daemon = True
+    t.start()
+
 
 class AIService(aiservice_pb2_grpc.ChatServiceServicer):
     def Chat(self, request, context):
-        chatting = chain.get_normal_chain("")
+        chatting = chain.get_normal_chain("x")
         res = chatting.invoke(request.msg)
         return aiservice_pb2.ChatResponse(msg = res["response"])
 
@@ -41,4 +63,5 @@ def main(service_ip, service_port, etcd_ip, etcd_port, etcd_prefix):
         grpc_server.stop(0)
 
 if __name__ == '__main__':
+    something_schedule()
     main("127.0.0.1", "8889", "192.168.40.134", "2379", "kitex/registry-etcd/chat/")
