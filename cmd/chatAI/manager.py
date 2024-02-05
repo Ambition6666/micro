@@ -1,26 +1,33 @@
 import etcd3
-from langchain.chains import ConversationChain
+
 
 class Manager:
     def __init__(self) -> None:
-        self.conns = dict()
         self.lease = None
 
-    def addConn(self, id: int, ConversationChain: ConversationChain) -> None:
-        self.conns[id] = ConversationChain 
-
-    def getConn(self, id) -> ConversationChain:
-        return self.conns[id]     
-
-    def removeConn(self, id) -> None:
-        del self.conns[id]
-
-    def setLease(self, lease: etcd3.Lease) -> None:
+    def setLease(self, lease: etcd3.Lease):
         self.lease = lease
 
     def refreshLease(self):
         if self.lease == None:
             return
         self.lease.refresh()
+
+class ChatManger:
+    def __init__(self) -> None:
+        self.conns = dict()
+
+    def addConn(self, id, ConversationChain):
+        self.conns[id] = ConversationChain 
+
+    def getConn(self, id: int):
+        if id in self.conns.keys():
+            return self.conns[id] 
+        return None    
+
+    def removeConn(self, id):
+        del self.conns[id]
+
     
 manager = Manager()
+chatManger = ChatManger()

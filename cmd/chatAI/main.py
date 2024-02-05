@@ -1,13 +1,13 @@
 import grpc
 import time
-from concurrent import futures
-import aiservice_pb2, aiservice_pb2_grpc
-from etcd import EtcdHandleServ
 import threading
 import signal
-import chain
 import sched
+import aiservice_pb2_grpc
+from concurrent import futures
+from etcd import EtcdHandleServ
 from manager import manager
+from aiservice import AIService
 
 # 定时任务对象
 schedule = sched.scheduler(time.time, time.sleep)
@@ -29,12 +29,6 @@ def something_schedule():
     t.daemon = True
     t.start()
 
-
-class AIService(aiservice_pb2_grpc.ChatServiceServicer):
-    def Chat(self, request, context):
-        chatting = chain.get_normal_chain("x")
-        res = chatting.invoke(request.msg)
-        return aiservice_pb2.ChatResponse(msg = res["response"])
 
 def main(service_ip, service_port, etcd_ip, etcd_port, etcd_prefix):
     print('***service is starting...')
