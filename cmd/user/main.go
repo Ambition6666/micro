@@ -12,13 +12,31 @@ import (
 	"log"
 	"micro/cmd/user/dal/db"
 	userdemo "micro/kitex_gen/userdemo/userservice"
+	zap "github.com/kitex-contrib/obs-opentelemetry/logging/zap"
+	"os"
+    "github.com/cloudwego/kitex/pkg/klog"
+	// "micro/pkg/utils"
 )
 
 func init() {
+	klog.SetLogger(zap.NewLogger())
+	klog.SetLevel(klog.LevelDebug)
 	db.InitDB()
 }
 
 func main() {
+
+	//确认日志位置
+	f, err := os.OpenFile("./log/output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+    if err != nil {
+        panic(err)
+    }
+    defer f.Close()
+    klog.SetOutput(f)
+
+	klog.Infof("日志注册成功")
+
+	serviceName := "user"
 
 	addr, _ := net.ResolveTCPAddr("tcp", "127.0.0.1:8888")
 
@@ -32,10 +50,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	svr := userdemo.NewServer(new(UserServiceImpl), server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "user"}), server.WithRegistry(r), server.WithServiceAddr(addr))
+	// cfg := make(map[string]any)
+
+	// configSuite := utils.InitConfigClient(serviceName, "test", 111, &cfg)
+
+	svr := userdemo.NewServer(new(UserServiceImpl), server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}), server.WithRegistry(r), server.WithServiceAddr(addr))
 	err = svr.Run()
 	if err != nil {
-		log.Fatal(err)
+		klog.Fatal(err)
 	}
 
 }

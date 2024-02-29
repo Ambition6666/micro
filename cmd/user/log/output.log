@@ -1,0 +1,25 @@
+{"level":"debug","ts":1709019983.7844257,"msg":"日志注册成功"}
+{"level":"info","ts":1709019983.7959373,"msg":"KITEX: server listen at addr=127.0.0.1:8888"}
+{"level":"info","ts":1709019984.8602602,"msg":"start keepalive lease 694d8de952981d0f for etcd registry"}
+{"level":"info","ts":1709020574.3636842,"msg":"keep register service kitex/registry-etcd/user/127.0.0.1:8888"}
+{"level":"info","ts":1709020574.3755047,"msg":"start keepalive lease 694d8de952981d2c for etcd registry"}
+{"level":"warn","ts":1709027545.2912374,"msg":"keep register get kitex/registry-etcd/user/127.0.0.1:8888 failed with err: context deadline exceeded"}
+{"level":"warn","ts":1709027587.9065895,"msg":"keep register get kitex/registry-etcd/user/127.0.0.1:8888 failed with err: context deadline exceeded"}
+{"level":"warn","ts":1709027595.9177432,"msg":"keep register get kitex/registry-etcd/user/127.0.0.1:8888 failed with err: context deadline exceeded"}
+{"level":"warn","ts":1709027603.932426,"msg":"keep register get kitex/registry-etcd/user/127.0.0.1:8888 failed with err: context deadline exceeded"}
+{"level":"info","ts":1709027639.7116358,"msg":"keep register service kitex/registry-etcd/user/127.0.0.1:8888"}
+{"level":"info","ts":1709027639.745873,"msg":"start keepalive lease 694d8de952981dc3 for etcd registry"}
+{"level":"warn","ts":1709027922.9280071,"msg":"keep register get kitex/registry-etcd/user/127.0.0.1:8888 failed with err: context deadline exceeded"}
+{"level":"warn","ts":1709027930.9406936,"msg":"keep register get kitex/registry-etcd/user/127.0.0.1:8888 failed with err: context deadline exceeded"}
+{"level":"info","ts":1709028917.382039,"msg":"keep register service kitex/registry-etcd/user/127.0.0.1:8888"}
+{"level":"info","ts":1709028917.4234784,"msg":"start keepalive lease 694d8de952981e8c for etcd registry"}
+{"level":"info","ts":1709030632.6953247,"msg":"keep register service kitex/registry-etcd/user/127.0.0.1:8888"}
+{"level":"info","ts":1709030632.722407,"msg":"start keepalive lease 694d8de952981ee1 for etcd registry"}
+{"level":"info","ts":1709031623.2459538,"msg":"keep register service kitex/registry-etcd/user/127.0.0.1:8888"}
+{"level":"info","ts":1709031623.2892244,"msg":"start keepalive lease 694d8de952981f11 for etcd registry"}
+{"level":"warn","ts":1709036889.6888058,"msg":"keep register get kitex/registry-etcd/user/127.0.0.1:8888 failed with err: context deadline exceeded"}
+{"level":"info","ts":1709036956.5981803,"msg":"keep register service kitex/registry-etcd/user/127.0.0.1:8888"}
+{"level":"info","ts":1709036956.6168945,"msg":"start keepalive lease 694d8de952981f35 for etcd registry"}
+{"level":"warn","ts":1709036999.649863,"msg":"keep register get kitex/registry-etcd/user/127.0.0.1:8888 failed with err: context deadline exceeded"}
+{"level":"info","ts":1709041499.762769,"msg":"stop keep register service kitex/registry-etcd/user/127.0.0.1:8888"}
+{"level":"error","ts":1709041499.7658405,"msg":"KITEX: BootstrapServer accept failed, err=accept tcp 127.0.0.1:8888: use of closed network connection"}
